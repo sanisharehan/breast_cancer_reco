@@ -1,0 +1,3 @@
+---------- Prediction for /home/msprj_bcr/Breast_cancer_recognition_using_CNN/breast_cancer_reco/website/static/uploads/SOB_B_F-14-14134E-400-001_resize.png ----------
+0.8399 - "benign 0"
+0.1601 - "malign 1"

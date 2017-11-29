@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Breast Cancer Detection</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="static/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="static/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+
+<style>
+.iris {
+    // background-image: url("http://i.huffpost.com/gen/2611686/images/o-BREAST-CANCER-AWARENESS-facebook.jpg");
+    background-repeat: no-repeat;
+    height: 100vh;
+    background-size: cover;
+}
+.choose_file {
+  padding:5px 10px;
+  background:#ffffff;
+  border:1px solid #00ad2d;
+  position:relative;
+  color:#fff;
+  border-radius:2px;
+  text-align:center;
+  float:left;
+  cursor:pointer
+}
+.hide_file {
+    position: absolute;
+    z-index: 1000;
+    opacity: 0;
+    cursor: pointer;
+    right: 0;
+    top: 0;
+    height: 100%;
+    font-size: 24px;
+    width: 100%;
+}
+</style>
+
+<body>
+  <nav class="pink lighten-2" role="navigation">
+    <div class="nav-wrapper container">
+	<a id="logo-container" href="#" class="brand-logo">Breast Cancer Recognition Using CNN</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="#">Project Results</a></li>
+      </ul>
+	<ul class="right hide-on-med-and-down">
+	<li class="active"><a href="#">Home</a></li>
+	</ul>
+
+<!--
+      <ul id="nav-mobile" class="side-nav">
+        <li><a href="#">Navbar Link</a></li>
+      </ul>
+
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>-->
+    </div>
+  </nav>
+  <div class="section no-pad-bot iris" id="index-banner">
+  <!--  
+  <div class="container"> 
+	<div class="row">
+		<div class="header col s8 light"><h5>Classify Breast Tissue Image</h5></div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col s4">
+			<form method="post" enctype="multipart/form-data">
+       			<input type="file" name="file" onChange="readURL(this)">
+               		<input type="submit" class="btn" value=Classify>
+               		<button class="btn waves-effect waves-light" type="submit" name="action">Classify
+                  		<i class="material-icons right">send</i>
+              		</button>
+			</form>
+		</div>
+		<div class="col s4">
+		Image uploaded should be shown here
+		<img id="bcr" src="#"></img>
+		</div>
+	</div>
+	<br><br>
+    </div>-->
+     <!-- <div class="row center"> <img class="col s12" src="http://i.huffpost.com/gen/2611686/images/o-BREAST-CANCER-AWARENESS-facebook.jpg"></div>
+      <br><br>
+      <h1 class="header center pink-text">Bre</h1>
+      <div class="row left">
+        <h5 class="header col s12 light">Classify Breast Tissue Image</h5>
+      </div>
+	<br><br>	
+      <div class="">
+	<form method="post" enctype="multipart/form-data">
+	  <input type="file" name="file" onChange="readURL(this)">
+             <input type="submit" class="btn" value=Classify>
+	     <button class="btn waves-effect waves-light" type="submit" name="action">Classify
+    		<i class="material-icons right">send</i>
+  	    </button> 
+	    <img id="bcr" src='#' alt="image"></img>
+	</div>-->
+	<!--
+ 	<div class="preloader-wrapper small active">
+    	<div class="spinner-layer spinner-green-only">
+      	<div class="circle-clipper left">
+        	<div class="circle"></div>
+      	</div><div class="gap-patch">
+        	<div class="circle"></div>
+      	</div><div class="circle-clipper right">
+        	<div class="circle"></div>
+      	</div>
+    	</div>
+  	</div>
+        </form>
+        <a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light orange">Get Started</a>
+      </div>
+      <br><br>
+	<div>
+		<p> Benign Probability </p>
+		<p> Malign Probability </p>
+	</div>
+
+    </div>
+  </div>-->
+  <div class="container" style="width:90%">
+    <div class="section">
+
+      <div class="row" >
+        <div class="col s4 m4" style="background-color:#FFFFFF">
+	    <img src="static/images/ribbon1.jpeg" style="max-width:100%;max-height:100%"></img>
+            <h5 class="center">Proposed Breast Tissue Image Classification</h5>
+
+            <p class="light">Our classification system based on Convolutional Neural Network (CNN) has an ability to classify breast tissue images as benign or malign case with an accuracy of ~92%. The underlying model is trained using histopathology image dataset consisting of 7900 images.</p>
+        </div>
+
+        <div class="col s4 m4">
+          <div class="icon-block" id="middle_section" hidden="true">
+            <h5 class="center">Results</h5>
+          </div>
+
+          <div class="progress" id="progress_bar" style="margin-top:50%; display:none">
+            <div class="indeterminate" id="progress_bar_moving" hidden="true"></div>
+          </div>	
+	  
+          <div id="piechart"></div>
+        </div>
+
+
+        <div class="col s4 m4" style="background-color:#fce4ec">
+          <div class="icon-block">
+            <h5 class="center">Upload Image</h5>
+
+            <p class="light center">Upload an image to calculate cancer probability</p>
+          </div>
+	  <div class="center">
+		<form method="post" enctype="multipart/form-data" onsubmit="unhide_progress_bar()">
+			<div class="row">
+			<div class="col s9 m9">
+			<input class="center" type="file" name="file" onChange="readURL(this)">
+			
+			<img id="bcr" src={{ path }} 
+			{% if path %}
+				style="width:300px; height:300px"
+			{% endif %}
+			></img>
+			</div>
+			<div class="col s3 m3">
+			<button class="btn-floating btn-large waves-effect waves-light left pink" type="submit" name="action">
+ 		            <i class="material-icons right">cloud_upload</i>
+		        </button>
+			</div>
+			</div>
+		</form>
+	  </div>
+        </div>
+
+      </div>
+
+    </div>
+     <div class="section"></div>
+  </div>
+  
+
+  <footer class="page-footer pink lighten-2">
+    <div class="container">
+      <div class="row">
+        <div class="col ml2 s12">
+          <h5 class="white-text">Biography</h5>
+          <p class="grey-text text-lighten-4">We are a team of graduate students from San Jose State University, California, working on increasing breast cancer awareness. Our aim is to provide a platform for easier and accurate detection of breast cancer cases using tissue images.</p>
+
+
+        </div>
+
+	<!--
+        <div class="col l3 s12">
+          <h5 class="white-text">Settings</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+	-->
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="static/js/materialize.js"></script>
+  <script src="static/js/init.js"></script>
+  <script src="static/js/readFile.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+      function unhide_progress_bar() {
+	$("#middle_section").hide();
+        $("#progress_bar").show();
+        $("#progress_bar_moving").show();
+      }
+
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Categories', 'Probabilities'],
+          ['Malign',  {{ mal }}],
+          ['Benign',  {{ ben }}],
+        ]);
+
+        var options = {
+          title: 'Cancer Probabilities',
+	  backgroundColor: { fill:'transparent' },
+          chartArea:{width:'150%', height:'150%'},
+	  legend: {textStyle: {fontSize: 16}},
+	  is3d:true,
+	  pieHole: 0.3,
+	  slices : {
+	    0 : { color: 'pink' },
+            1 : { color: 'green' }
+	  }
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+	$("#middle_section").show();
+        chart.draw(data, options);
+      }
+  </script>
+  </body>
+</html>
