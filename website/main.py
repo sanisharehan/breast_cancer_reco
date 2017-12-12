@@ -3,6 +3,7 @@ from flask import Flask
 from flask import render_template
 from flask import request
 from flask import redirect
+from flask import url_for
 from flask import send_from_directory
 from werkzeug.utils import secure_filename
 from bcrCnnValidation import predictBCRClassification
@@ -32,6 +33,15 @@ def classifyBrImage(filepath):
 	belignProb, malignProb = predictBCRClassification(filepath)
 	return belignProb, malignProb
 
+@app.route("/results", methods=["GET"])
+def result_charts():
+    try:
+	filepath=""
+	mProb=1
+	bProb=1
+	return render_template("result.html", path=filepath, mal=mProb, ben=bProb)
+    except Exception as e:
+	print("Exception: %s" %(e))
 
 @app.route("/", methods=["GET", "POST"])
 def hello():
