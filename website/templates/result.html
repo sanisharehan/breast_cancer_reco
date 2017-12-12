@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Breast Cancer Detection</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="static/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="static/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+
+<style>
+.iris {
+    // background-image: url("http://i.huffpost.com/gen/2611686/images/o-BREAST-CANCER-AWARENESS-facebook.jpg");
+    background-repeat: no-repeat;
+    height: 100vh;
+    background-size: cover;
+}
+.choose_file {
+  padding:5px 10px;
+  background:#ffffff;
+  border:1px solid #00ad2d;
+  position:relative;
+  color:#fff;
+  border-radius:2px;
+  text-align:center;
+  float:left;
+  cursor:pointer
+}
+.hide_file {
+    position: absolute;
+    z-index: 1000;
+    opacity: 0;
+    cursor: pointer;
+    right: 0;
+    top: 0;
+    height: 100%;
+    font-size: 24px;
+    width: 100%;
+}
+#customers {
+    font-family: "Roboto", sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#customers td, #customers th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #f06292;
+    color: white;
+}
+</style>
+
+<body>
+  <nav class="pink lighten-2" role="navigation">
+    <div class="nav-wrapper container">
+	<a id="logo-container" href="#" class="brand-logo">Breast Cancer Recognition Using CNN</a>
+      <ul class="right hide-on-med-and-down">
+        <li class="active"><a href="#">Project Results</a></li>
+      </ul>
+	<ul class="right hide-on-med-and-down">
+	<li><a href="{{ url_for ('hello') }}">Home</a></li>
+	</ul>
+
+<!--
+      <ul id="nav-mobile" class="side-nav">
+        <li><a href="#">Navbar Link</a></li>
+      </ul>
+
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>-->
+    </div>
+  </nav>
+  <div class="section no-pad-bot iris" id="index-banner">
+  <!--  
+  <div class="container"> 
+	<div class="row">
+		<div class="header col s8 light"><h5>Classify Breast Tissue Image</h5></div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col s4">
+			<form method="post" enctype="multipart/form-data">
+       			<input type="file" name="file" onChange="readURL(this)">
+               		<input type="submit" class="btn" value=Classify>
+               		<button class="btn waves-effect waves-light" type="submit" name="action">Classify
+                  		<i class="material-icons right">send</i>
+              		</button>
+			</form>
+		</div>
+		<div class="col s4">
+		Image uploaded should be shown here
+		<img id="bcr" src="#"></img>
+		</div>
+	</div>
+	<br><br>
+    </div>-->
+     <!-- <div class="row center"> <img class="col s12" src="http://i.huffpost.com/gen/2611686/images/o-BREAST-CANCER-AWARENESS-facebook.jpg"></div>
+      <br><br>
+      <h1 class="header center pink-text">Bre</h1>
+      <div class="row left">
+        <h5 class="header col s12 light">Classify Breast Tissue Image</h5>
+      </div>
+	<br><br>	
+      <div class="">
+	<form method="post" enctype="multipart/form-data">
+	  <input type="file" name="file" onChange="readURL(this)">
+             <input type="submit" class="btn" value=Classify>
+	     <button class="btn waves-effect waves-light" type="submit" name="action">Classify
+    		<i class="material-icons right">send</i>
+  	    </button> 
+	    <img id="bcr" src='#' alt="image"></img>
+	</div>-->
+	<!--
+ 	<div class="preloader-wrapper small active">
+    	<div class="spinner-layer spinner-green-only">
+      	<div class="circle-clipper left">
+        	<div class="circle"></div>
+      	</div><div class="gap-patch">
+        	<div class="circle"></div>
+      	</div><div class="circle-clipper right">
+        	<div class="circle"></div>
+      	</div>
+    	</div>
+  	</div>
+        </form>
+        <a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light orange">Get Started</a>
+      </div>
+      <br><br>
+	<div>
+		<p> Benign Probability </p>
+		<p> Malign Probability </p>
+	</div>
+
+    </div>
+  </div>-->
+  <div class="container" style="width:90%">
+    <div class="section">
+
+      <div class="row" >
+        <div class="col s5 m5" style="background-color:#FFFFFF">
+            <h5 class="center">Original and Proposed CNN Model</h5>
+            <br>
+            <div class="section">
+	    <h6> Original Alexnet Model </h6>
+	    <img src="static/images/alexnet_orig.png" style="max-width:100%;max-height:110%"></img>
+	    <h6> Proposed Model </h6>
+            <img src="static/images/alexnet_new.png" style="max-width:100%;max-height:110%"></img>
+            </div>
+	   
+            <br> 
+	    <div class="section">
+           <h6><b> Features involved in Breast Cancer Tissue Classification Using Non-CNN methods </b></h6>
+           <br> 
+           <table id="customers">
+  		<tr>
+    		<th>Feature</th>
+    		<th>Description</th>
+  		</tr>
+  		<tr>
+    		<td>Perimeter</td>
+    		<td>Number of nucleus boundary points</td>
+  		</tr>
+  		<tr>
+    		<td>Area</td>
+    		<td>Number of points inside the nucleus</td>
+  		</tr>
+  		<tr>
+    		<td>Compactness</td>
+    		<td>Calculated from perimeter and area of the nucleus using formula,<i> C = 4pi * area/perimeter</i> . This is the measure of the efficiency with which a boundary encloses
+an area.</td>
+  		</tr>
+                <tr>
+                <td>Energy</td>
+                <td>Measures the homogeneity in the segmented breast images. It is computed as the correlation between two gray levels a and b, located at unit-distance at an angle of 0 degree.</td>
+                </tr>
+                <tr>
+                <td>Contrast</td>
+                <td>Provides local pixel intensity variation.</td>
+                </tr>
+                <tr>
+                <td>Entropy</td>
+                <td>Statistical measure of randomness that can be used to characterize the texture of the input image.</td>
+                </tr> 
+                <tr>
+                <td>Local Binary Patterns</td>
+                <td>Texture descriptor which computes a local representation of texture. The representation is constructed by comparing each pixel with its surrounding neighborhood of pixels.</td>
+                </tr>
+                <tr>
+                <td>Parameter-Free Threshold Adjacency Statistics</td>
+                <td>A morphological feature, with principle to accumulate in the histogram bins, pixels according to their number of white neighbors, in multiple-threshold binarized images.</td>
+                </tr>
+                <tr>
+                <td>ORB (Oriented FAST and Rotated BRIEF)</td>
+                <td>Designed to be rotation invariant and noise tolerant, it provides FAST keypoint detectors and BRIEF keypoint descriptors.</td>
+                </tr>
+		</table> 
+            </div>
+
+        </div>
+
+        <div class="col s7 m7">
+	  <div class="icon-block" id="middle_section">
+            <h5 class="center">Results and Comparison</h5>
+          </div>
+         
+            <div class="section"> 
+            <div id="piechart"></div>
+            </div>
+	  
+            <div class="section">
+            <div id="comp_chart"></div>
+            </div>
+           
+        </div>
+      </div>
+
+    </div>
+     <div class="section"></div>
+  </div>
+  
+
+  <footer class="page-footer pink lighten-2">
+    <div class="container">
+      <div class="row">
+        <div class="col ml2 s12">
+          <h5 class="white-text">Biography</h5>
+          <p class="grey-text text-lighten-4">We are a team of graduate students from San Jose State University, California, working on increasing breast cancer awareness. Our aim is to provide a platform for easier and accurate detection of breast cancer cases using tissue images.</p>
+
+
+        </div>
+
+	<!--
+        <div class="col l3 s12">
+          <h5 class="white-text">Settings</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+	-->
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="static/js/materialize.js"></script>
+  <script src="static/js/init.js"></script>
+  <script src="static/js/readFile.js"></script>
+ <script src="https://code.highcharts.com/highcharts.js"></script>
+ <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script type="text/javascript">
+  Highcharts.chart('piechart', {
+    chart: {
+        type: 'bar',
+        /*
+	events: {
+                    load: function () {
+                        var label = this.renderer.label("How do I move this center and under the legend.")
+                        .css({
+                            width: '450px',
+                            color: '#222',
+                            fontSize: '16px'
+                        })
+                        .attr({
+                            'stroke': 'silver',
+                            'stroke-width': 2,
+                            'r': 5,
+                            'padding': 10
+                        })
+                        .add();
+                       label.align(Highcharts.extend(label.getBBox(), {
+                            align: 'center',
+                            x: 0, // offset
+                            verticalAlign: 'bottom',
+                            y: 50 // offset
+                        }), null, 'spacingBox');
+                    }
+       },
+       renderTo: 'piechart',
+       */
+    },
+    title: {
+        text: 'Accuracy Comparison Among Different CNN Models'
+    },
+    xAxis: {
+            categories: [
+                'GoogleNet',
+                'VGGNet',
+                'AlexNet',
+                'LeNet',
+                'Modified AlexNet',
+                'Modified AlexNet',
+                'Modified AlexNet'
+                ]
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Accuracy (%)',
+            align: 'high'
+        },
+        labels: {
+            overflow: 'justify'
+        }
+    },
+    tooltip: {
+        valueSuffix: ''
+    },
+legend: {
+            enabled: false
+        },
+ plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                },
+  },    series: [{
+        name: 'Accuracy',
+        data: [30, 20, 84.50, 40, 92.10, {y:60, color: '#6d4c41'}, {y:54, color: "#33691e"}]
+    }]
+});
+Highcharts.chart('comp_chart', {
+    chart: {
+        type: 'bar' 
+    },
+    title: {
+        text: 'Accuracy Comparison Among Different Methods'
+    },
+    xAxis: {
+            categories: [
+                'CNN, Spanhol et.al',
+                'CNN, Bayramoglu et. al',
+                'CNN, Proposed',
+                'CLBP',
+                'GLCM',
+                'LBP',
+                'LPQ',
+                'ORB',
+                'PFTAS'
+                ]
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Accuracy (%)',
+            align: 'high'
+        },
+        labels: {
+            overflow: 'justify'
+        }
+    },
+legend: {
+            enabled: false
+        },
+    tooltip: {
+        valueSuffix: ''
+    },
+    plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                },
+  },
+    series: [{
+        name: 'Accuracy',
+        data: [{y:86.1, color:'#80cbc4'}, {y:83.25, color:'#00796b'}, {y:92.1, color:'#004d40'}, 74.2, 79.6, 73.7, 73.65,70.25, 83.33]
+    }] 
+}); 
+  </script>
+  </body>
+</html>
